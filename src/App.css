@@ -1,0 +1,26 @@
+
+
+  /* Transitions */
+  /*Entra iniciando completamente a la derecha*/
+  .slide-enter {
+    transform: translate(100%);
+  }
+  /*Al entrar iniciando completamente a la derecha tiene que llegar hasta su posicion sin traslate*/
+  .slide-enter-active {
+    transform: translate(0%);
+    transition: transform 500ms ;
+  }
+  
+  /*Al salir inicia en el normal de las X pero la Y la subimos completamente 
+  esto es porque los div no se empalman y apareceria abajo*/ 
+  .slide-exit {
+      transform: translate(0%, -100%);
+    }
+  
+  /*Dictamos donde seria la salida en este caso fuera de la pantalla con el -100 
+  pero ademas que siga en la parte de arriba*/
+  
+  .slide-exit-active {
+      transform: translate(-100%, -100%);
+      transition: transform 500ms;
+    }

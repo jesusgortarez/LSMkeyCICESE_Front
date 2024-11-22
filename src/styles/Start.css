@@ -1,0 +1,201 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900');
+@import url('https://fonts.googleapis.com/css2?family=Madimi+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jersey+25&family=Signika+Negative:wght@300..700&display=swap');
+body{
+    font-family: "Merriweather", serif;
+}
+
+
+
+  .centered {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;    /* Centra verticalmente */
+    height: 50vh;          /* Ocupa toda la altura de la ventana */
+  }
+.colaborar-button {
+  position: fixed;
+  bottom: 16px; /* Distancia desde la parte inferior */
+  left: 16px; /* Distancia desde la parte derecha */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}
+
+.deleted-button {
+  position: fixed;
+  bottom: 16px; /* Distancia desde la parte inferior */
+  right: 16px; /* Distancia desde la parte derecha */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}
+
+
+.model-canvas {
+  display: flex; /* Aplica un layout flexible */
+  flex-direction: row; /* Coloca los elementos en fila */
+  justify-content: space-around; /* Espaciado uniforme entre los elementos */
+  align-items: center; /* Centra verticalmente los elementos */
+  padding: 10px; /* Espaciado interno */
+}
+.component-wrapper {
+  display: inline-block; /* Respetar el tamaño natural del contenido */
+}
+
+.canvasfbr {
+  align-items: center; /* Centra verticalmente los elementos */
+  height: 33vh; /* Usa toda la altura de la ventana */
+  width: 100vh; /* Usa toda la altura de la ventana */
+}
+
+.letterButtons {
+  display: flex;
+  justify-content: space-around; /* Espaciado uniforme entre los elementos */
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.textInputWithButtons{
+  display: flex; /* Aplica un layout flexible */
+  flex-direction: row; /* Coloca los elementos en fila */
+  justify-content: space-around; /* Espaciado uniforme entre los elementos */
+  align-items: center; /* Centra verticalmente los elementos */
+  padding: 10px; /* Espaciado interno */
+  }
+
+  .centered-container {
+    display: flex;
+    justify-content: center;
+    
+    align-items: center;
+    min-height: 100vh; /* Asegura que ocupe toda la pantalla */
+    position: relative;
+    
+  }
+  
+  .centered-content {
+    text-align: center;
+    
+  }
+
+.area{
+    background: linear-gradient(to top, #98c0e6, #ffffff);
+    width: 100%;
+    height: 100vh;
+}
+
+.areaselect{
+  position: absolute !important;
+  z-index: 1 !important;
+}
+
+.circulos{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: -15px;
+    left: 0;
+    overflow: hidden;
+}
+
+.circulos li{
+    position: absolute;
+    display: block;
+    opacity: 0.5;
+    background: #4c98e4;
+    width: 20px;
+    height: 20px;
+    list-style: none;
+    border-radius: 10%;
+}
+
+.circulos li:nth-child(1){
+    left: 25%;
+    width: 80px;
+    height: 80px;
+    animation-delay: 0s;
+}
+
+.circulos li:nth-child(2){
+    left: 10%;
+    width: 30px;
+    height: 30px;
+    animation-delay: 2s;
+    animation-duration: 12s;
+}
+
+.circulos li:nth-child(3){
+    left: 70%;
+    width: 30px;
+    height: 30px;
+    animation-delay: 4s;
+}
+
+.circulos li:nth-child(4){
+    left: 40%;
+    width: 60px;
+    height: 60px;
+    animation-delay: 0s;
+    animation-duration: 18s;
+}
+ 
+.circulos li:nth-child(5){
+    left: 65%;
+    width: 30px;
+    height: 30px;
+    animation-delay: 0s;
+}
+
+.circulos li:nth-child(6){
+    left: 75%;
+    width: 110px;
+    height: 100px;
+    animation-delay: 3s;
+}
+
+.circulos li:nth-child(7){
+    left: 35%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 7s;
+}
+
+.circulos li:nth-child(8){
+    left: 50%;
+    width: 35px;
+    height: 35px;
+    animation-delay: 15s;
+    animation-duration: 45s;
+}
+
+.circulos li:nth-child(9){
+    left: 20%;
+    width: 25px;
+    height: 25px;
+    animation-delay: 2s;
+    animation-duration: 35s;
+}
+
+.circulos li:nth-child(10){
+    left: 85%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 2s;
+    animation-duration: 12s;
+}
+
+.circulos li{
+    bottom: -150px;
+    animation: animate 25s linear infinite;
+}
+
+@keyframes animate{
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+        border-radius: 0;
+    }
+    100%{
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+        border-radius: 50%;
+    }
+}
