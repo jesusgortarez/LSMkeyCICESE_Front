@@ -1,59 +1,74 @@
+// Importamos React y los hooks necesarios.
 import React, { useState } from 'react';
+
+// Importamos los componentes necesarios de react-router-dom y Semantic UI.
 import { useNavigate } from 'react-router-dom';
 import { Button, Loader, Message, Modal, Input } from 'semantic-ui-react';
 
 const Deleted = () => {
+	// Inicializamos useNavigate para redirigir a otras páginas.
 	const navigate = useNavigate();
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
-	const [success, setSuccess] = useState(false);
-	const [isModalOpen, setModalOpen] = useState(false);
-	const [inputId, setInputId] = useState(''); // ID ingresado por el usuario
+
+	// Definimos los estados para manejar la lógica del componente.
+	const [loading, setLoading] = useState(false); // Indicador de carga.
+	const [error, setError] = useState(null); // Estado para errores.
+	const [success, setSuccess] = useState(false); // Estado para éxito.
+	const [isModalOpen, setModalOpen] = useState(false); // Controla la visibilidad del modal.
+	const [inputId, setInputId] = useState(''); // Almacena el ID ingresado por el usuario.
+
+	// Obtenemos la API key almacenada en localStorage.
 	const apiKey = localStorage.getItem('apiKey');
-	// Función para eliminar el registro
+
+	// Función asincrónica para eliminar un registro basado en el ID proporcionado.
 	const deleteRecord = async (id) => {
+		// Reseteamos los estados antes de iniciar la operación.
 		setLoading(true);
 		setError(null);
 		setSuccess(false);
 
 		try {
+			// Hacemos una solicitud DELETE al endpoint correspondiente.
 			const response = await fetch(
 				import.meta.env.VITE_API_URL + 'deleted/' + id,
 				{
 					method: 'DELETE',
 					headers: {
 						'Content-Type': 'application/json',
-						'x-api-key': apiKey, // Usa la API key almacenada
+						'x-api-key': apiKey, // Incluimos la API key en los encabezados.
 					},
 				}
 			);
 
+			// Si la respuesta no es exitosa, lanzamos un error.
 			if (!response.ok) {
 				throw new Error('Error al eliminar el registro');
 			}
 
+			// Si la eliminación fue exitosa, actualizamos el estado.
 			setSuccess(true);
 		} catch (err) {
+			// Si ocurre un error, lo registramos en el estado.
 			setError(err.message);
 		} finally {
+			// Independientemente del resultado, ocultamos el loader y cerramos el modal.
 			setLoading(false);
-			setModalOpen(false); // Cerrar el modal después de la operación
+			setModalOpen(false);
 		}
 	};
 
-	// Abrir o cerrar el modal
+	// Función para alternar la visibilidad del modal.
 	const toggleModal = () => {
 		setModalOpen(!isModalOpen);
 	};
 
-	// Redirigir al usuario a otra página
+	// Función para redirigir al usuario a la página de inicio.
 	const handleRedirect = () => {
-		navigate('/'); // Cambia la ruta según tu necesidad
+		navigate('/'); // Cambia la ruta según tu necesidad.
 	};
 
 	return (
 		<div style={{ textAlign: 'center', padding: '2rem' }} className='area'>
-			{/* Mensajes de éxito o error */}
+			{/* Mostrar mensajes de estado: cargando, éxito o error */}
 			{loading ? (
 				<Loader active inline='centered' size='large'>
 					Cargando...
@@ -71,7 +86,7 @@ const Deleted = () => {
 			) : null}
 
 			<div className='centered'>
-				{/* Botón para volver al inicio */}
+				{/* Botón para redirigir al inicio */}
 				<Button
 					color='blue'
 					onClick={handleRedirect}
@@ -90,10 +105,11 @@ const Deleted = () => {
 				</Button>
 			</div>
 
-			{/* Modal para ingresar ID */}
+			{/* Modal para ingresar el ID a eliminar */}
 			<Modal open={isModalOpen} onClose={toggleModal} size='small'>
 				<Modal.Header>Eliminar Registro</Modal.Header>
 				<Modal.Content>
+					{/* Input para capturar el ID */}
 					<Input
 						fluid
 						placeholder='Ingresa el ID del registro a eliminar...'
@@ -102,13 +118,15 @@ const Deleted = () => {
 					/>
 				</Modal.Content>
 				<Modal.Actions>
+					{/* Botón para cerrar el modal */}
 					<Button color='grey' onClick={toggleModal}>
 						Cancelar
 					</Button>
+					{/* Botón para confirmar la eliminación */}
 					<Button
 						color='red'
 						onClick={() => deleteRecord(inputId)}
-						disabled={!inputId.trim()}
+						disabled={!inputId.trim()} // Deshabilitar si el ID está vacío.
 					>
 						Eliminar
 					</Button>
@@ -118,4 +136,5 @@ const Deleted = () => {
 	);
 };
 
+// Exportamos el componente para ser utilizado en otras partes de la aplicación.
 export default Deleted;

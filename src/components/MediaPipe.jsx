@@ -6,9 +6,7 @@ import {
 	FilesetResolver,
 } from '@mediapipe/tasks-vision';
 
-export default React.memo(function FingerMediaSelectHand({
-	onLandmarkDetected,
-}) {
+export default React.memo(function MediaPipe({ onLandmarkDetected }) {
 	const webcamRef = useRef(null);
 	const canvasRef = useRef(null);
 	const [handLandmarker, setHandLandmarker] = useState(null);

@@ -1,7 +1,9 @@
+// Importamos las dependencias necesarias.
 import React, { useState } from 'react';
 import { Button, Input, Form, Modal } from 'semantic-ui-react';
 
 const TextInputWithButtons = ({ onSendData }) => {
+	// Estado para almacenar los valores ingresados por el usuario.
 	const [inputs, setInputs] = useState({
 		letra: '',
 		tipoLetra: '',
@@ -11,40 +13,49 @@ const TextInputWithButtons = ({ onSendData }) => {
 		fechaToma: '',
 	});
 
-	const [modalOpen, setModalOpen] = useState(false); // Estado para abrir el modal
-	const [selectedType, setSelectedType] = useState(''); // Para almacenar el tipo de descarga seleccionado
+	// Estado para controlar la apertura del modal.
+	const [modalOpen, setModalOpen] = useState(false);
+
+	// Estado para almacenar el tipo de operación seleccionada por el usuario.
+	const [selectedType, setSelectedType] = useState('');
+
+	// Obtenemos la API key almacenada en localStorage.
 	const apiKey = localStorage.getItem('apiKey');
 
-	// Actualiza los valores de los campos
+	// Actualiza los valores de los inputs conforme el usuario escribe.
 	const handleChange = (e) =>
 		setInputs({ ...inputs, [e.target.name]: e.target.value });
 
-	// Realiza el fetch de manera genérica
+	// Función genérica para realizar solicitudes GET al servidor.
 	const fetchData = (endpoint, data, download) => {
+		// Serializamos los parámetros en formato de consulta (query string).
 		const queryParams = new URLSearchParams(data).toString();
+
+		// Realizamos la solicitud al servidor.
 		fetch(import.meta.env.VITE_API_URL + `${endpoint}?${queryParams}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-				'x-api-key': apiKey,
+				'x-api-key': apiKey, // Incluimos la API key.
 			},
 		})
 			.then((response) =>
+				// Si la respuesta es exitosa, la procesamos como JSON.
 				response.ok ? response.json() : Promise.reject('Error')
 			)
 			.then((data) => {
-				if (download) {
-					onSendData(data, download);
-				} else {
-					onSendData(data, download);
-				}
+				// Pasamos los datos al manejador de datos recibido como prop.
+				onSendData(data, download);
 			})
-
-			.catch((error) => console.error('Error al enviar la solicitud:', error));
+			.catch((error) =>
+				// Manejamos cualquier error que ocurra durante la solicitud.
+				console.error('Error al enviar la solicitud:', error)
+			);
 	};
 
-	// Maneja el clic en los botones
+	// Maneja el clic de los botones, configurando el estado según el tipo seleccionado.
 	const handleButtonClick = (type) => {
+		// Datos que se enviarán al servidor.
 		const data = {
 			letra: inputs.letra,
 			tipoLetra: inputs.tipoLetra,
@@ -54,6 +65,7 @@ const TextInputWithButtons = ({ onSendData }) => {
 			fechaToma: inputs.fechaToma,
 		};
 
+		// Mapeo de los endpoints disponibles.
 		const endpoints = {
 			Imagenes: 'imagenes',
 			Keypoint: 'keypoints',
@@ -61,16 +73,20 @@ const TextInputWithButtons = ({ onSendData }) => {
 			Random: 'random',
 			Todo: 'everything',
 		};
+
 		setSelectedType(type);
+
+		// Si el tipo es "Random", hacemos la solicitud directamente.
 		if (type === 'Random') {
 			if (endpoints[selectedType])
 				fetchData(endpoints[selectedType], data, false);
 		} else {
-			setModalOpen(true); // Abre el modal para confirmar la descarga
+			// Para otros tipos, abrimos el modal de confirmación.
+			setModalOpen(true);
 		}
 	};
 
-	// Confirmar la descarga
+	// Confirma la descarga del tipo seleccionado.
 	const confirmDownload = () => {
 		const data = {
 			letra: inputs.letra,
@@ -90,15 +106,15 @@ const TextInputWithButtons = ({ onSendData }) => {
 		};
 
 		if (endpoints[selectedType]) fetchData(endpoints[selectedType], data, true);
-		setModalOpen(false); // Cierra el modal
+		setModalOpen(false); // Cerramos el modal.
 	};
 
-	// Cancelar la descarga
+	// Cancela la descarga, simplemente cerrando el modal.
 	const cancelDownload = () => {
-		setModalOpen(false); // Solo cierra el modal sin hacer nada
+		setModalOpen(false);
 	};
 
-	// Definir los botones con colores
+	// Definimos los botones disponibles y sus colores.
 	const buttons = [
 		{ type: 'Imagenes', color: 'purple' },
 		{ type: 'Keypoint', color: 'green' },
@@ -109,7 +125,9 @@ const TextInputWithButtons = ({ onSendData }) => {
 
 	return (
 		<>
+			{/* Formulario para capturar los inputs */}
 			<Form size='tiny'>
+				{/* Renderizamos los botones */}
 				{buttons.map(({ type, color }) => (
 					<Button
 						key={type}
@@ -120,6 +138,8 @@ const TextInputWithButtons = ({ onSendData }) => {
 						{type}
 					</Button>
 				))}
+
+				{/* Renderizamos los campos de entrada */}
 				{[
 					'letra',
 					'tipoLetra',
@@ -133,14 +153,14 @@ const TextInputWithButtons = ({ onSendData }) => {
 							name={field}
 							value={inputs[field]}
 							onChange={handleChange}
-							placeholder={`Ingrese ${field.replace(/([A-Z])/g, ' $1')}`}
-							type={field.includes('fecha') ? 'date' : 'text'}
+							placeholder={`Ingrese ${field.replace(/([A-Z])/g, ' $1')}`} // Formateo de nombre.
+							type={field.includes('fecha') ? 'date' : 'text'} // Cambiamos el tipo si es una fecha.
 						/>
 					</Form.Field>
 				))}
 			</Form>
 
-			{/* Modal de confirmación */}
+			{/* Modal para confirmar la descarga */}
 			<Modal open={modalOpen} onClose={cancelDownload}>
 				<Modal.Header>Confirmación de descarga</Modal.Header>
 				<Modal.Content>
@@ -161,4 +181,5 @@ const TextInputWithButtons = ({ onSendData }) => {
 	);
 };
 
+// Exportamos el componente para que pueda ser usado en otras partes de la aplicación.
 export default TextInputWithButtons;
